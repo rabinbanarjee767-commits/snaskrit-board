@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বাংলাদেশ সংস্কৃত ও পালি শিক্ষা বোর্ড</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kalpurush&display=swap');
+        body {
+            font-family: 'Kalpurush', sans-serif;
+            background-color: #f7fafc;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Top Bar -->
+    <header class="bg-orange-700 text-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="text-center md:text-left">
+                <h1 class="text-2xl md:text-3xl font-bold" id="siteTitle">বাংলাদেশ সংস্কৃত ও পালি শিক্ষা বোর্ড</h1>
+                <p class="text-sm text-orange-200" id="siteAddress">ঠিকানা- অতিশ দীপঙ্কর সড়ক, ঢাকা-১২১৪</p>
+            </div>
+            <div class="mt-3 md:mt-0 flex gap-2">
+                <button onclick="openCollegeLoginModal()" class="bg-white text-orange-700 font-bold px-4 py-2 rounded shadow hover:bg-orange-100 transition">কলেজ লগইন</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav class="bg-white shadow">
+        <div class="container mx-auto px-4 flex justify-center space-x-6 py-3 font-semibold text-gray-700">
+            <a href="#" onclick="showSection('home')" class="hover:text-orange-600 transition">হোম</a>
+            <a href="#" onclick="showSection('notices')" class="hover:text-orange-600 transition">নোটিশ বোর্ড</a>
+            <a href="#" onclick="showSection('colleges')" class="hover:text-orange-600 transition">অনুমোদিত কলেজসমূহ</a>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container mx-auto px-4 py-8">
+
+        <!-- HOME SECTION -->
+        <section id="homeSection" class="space-y-8">
+            <div class="bg-white p-6 rounded-lg shadow border-t-4 border-orange-600">
+                <h2 class="text-2xl font-bold text-orange-700 mb-4">বোর্ডের পরিচিতি ও নির্দেশনা</h2>
+                <p class="text-gray-600 leading-relaxed mb-4">
+                    বাংলাদেশ সংস্কৃত ও পালি শিক্ষা বোর্ডের অধীনস্থ সকল সংস্কৃত টোল ও পালি বিহারের ছাত্র-ছাত্রীদের ২০২৭ সালের পরীক্ষার ফরম পূরণের কার্যক্রম নির্দিষ্ট কলেজ বা শিক্ষা প্রতিষ্ঠানের মাধ্যমে সম্পন্ন হবে। সাধারণ শিক্ষার্থীরা সরাসরি নয়, বরং নিজ নিজ কলেজের আইডি ও পাসওয়ার্ড ব্যবহার করে কলেজ ড্যাশবোর্ডের মাধ্যমে ফরম এন্ট্রি করবে।
+                </p>
+                <div class="bg-orange-50 p-4 rounded border border-orange-200">
+                    <h3 class="font-bold text-orange-800 mb-2">গুরুত্বপূর্ণ তারিখ ও তথ্য (২০২৭):</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>ফরম পূরণ শুরু: ১০ জানুয়ারি ২০২৭</li>
+                        <li>ফরম পূরণের শেষ তারিখ: ২৫ ফেব্রুয়ারি ২০২৭</li>
+                        <li>শ্রেণি সমূহের নাম: আদ্য, মধ্য, উপাধি</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- NOTICES SECTION -->
+        <section id="noticesSection" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-2xl font-bold text-orange-700 mb-6">নোটিশ বোর্ড ও ফরম বা সার্কুলার</h2>
+                <div id="noticeListContainer" class="space-y-4">
+                    <!-- Dynamic Notices -->
+                </div>
+            </div>
+        </section>
+
+        <!-- COLLEGES LIST SECTION -->
+        <section id="collegesSection" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-2xl font-bold text-orange-700 mb-4">অনুমোদিত কলেজ ও শিক্ষা প্রতিষ্ঠানের তালিকা</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-orange-100 text-orange-800">
+                                <th class="p-3 border">কলেজ আইডি</th>
+                                <th class="p-3 border">প্রতিষ্ঠানের নাম</th>
+                                <th class="p-3 border">বোর্ড</th>
+                            </tr>
+                        </thead>
+                        <tbody id="approvedCollegesTableBody">
+                            <!-- Dynamic Colleges -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- COLLEGE DASHBOARD (Hidden by default) -->
+    <section id="collegeDashboardSection" class="hidden container mx-auto px-4 py-8">
+        <div class="bg-white p-6 rounded-lg shadow border-t-4 border-blue-600 mb-6 flex justify-between items-center">
+            <div>
+                <h2 class="text-2xl font-bold text-blue-700" id="loggedInCollegeName">কলেজ ড্যাশবোর্ড</h2>
+                <p class="text-sm text-gray-500">আপনার প্রতিষ্ঠানের ছাত্র-ছাত্রীদের ফরম এন্ট্রি করুন</p>
+            </div>
+            <button onclick="logoutCollege()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">লগআউট</button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Student Form Entry -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">শিক্ষার্থীর ফরম এন্ট্রি (২০২৭ সাল)</h3>
+                <form id="studentEntryForm" onsubmit="submitStudentForm(event)" class="space-y-4">
+                    <div>
+                        <label class="block font-semibold mb-1">শিক্ষার্থীর নাম:</label>
+                        <input type="text" id="stuName" required class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-semibold mb-1">পিতার নাম:</label>
+                            <input type="text" id="stuFather" required class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">মাতার নাম:</label>
+                            <input type="text" id="stuMother" required class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-semibold mb-1">শ্রেণি:</label>
+                            <select id="stuClass" required class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">শ্রেণি নির্বাচন করুন</option>
+                                <option value="আদ্য">আদ্য</option>
+                                <option value="মধ্য">মধ্য</option>
+                                <option value="উপাধি">উপাধি</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">বিষয়:</label>
+                            <select id="stuSubject" required class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">বিষয় নির্বাচন করুন</option>
+                                <option value="কাব্য">কাব্য</option>
+                                <option value="ব্যাকরণ">ব্যাকরণ</option>
+                                <option value="স্মৃতি">স্মৃতি</option>
+                                <option value="জ্যোতিষ">জ্যোতিষ</option>
+                                <option value="পুরাণ">পুরাণ</option>
+                                <option value="পৌরোহিত্য">পৌরোহিত্য</option>
+                                <option value="বেদান্ত">বেদান্ত</option>
+                                <option value="আয়ুর্বেদ">আয়ুর্বেদ</option>
+                                <option value="গীতা">গীতা</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div>
+                            <label class="block font-semibold mb-1">বিভাগ:</label>
+                            <select id="regDivision" onchange="loadDistricts()" required class="w-full border p-2 rounded text-sm">
+                                <option value="">বিভাগ নির্বাচন</option>
+                                <option value="ঢাকা">ঢাকা</option>
+                                <option value="চট্টগ্রাম">চট্টগ্রাম</option>
+                                <option value="রাজশাহী">রাজশাহী</option>
+                                <option value="খুলনা">খুলনা</option>
+                                <option value="বরিশাল">বরিশাল</option>
+                                <option value="সিলেট">সিলেট</option>
+                                <option value="রংপুর">রংপুর</option>
+                                <option value="ময়মনসিংহ">ময়মনসিংহ</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">জেলা:</label>
+                            <select id="regDistrict" onchange="loadThanas()" required class="w-full border p-2 rounded text-sm">
+                                <option value="">প্রথমে বিভাগ</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">উপজেলা/থানা:</label>
+                            <select id="regThana" required class="w-full border p-2 rounded text-sm">
+                                <option value="">প্রথমে জেলা</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-semibold mb-1">মোবাইল নম্বর:</label>
+                        <input type="text" id="stuMobile" required class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white font-bold p-2 rounded hover:bg-blue-700 transition">ফরম সাবমিট করুন</button>
+                </form>
+            </div>
+
+            <!-- College Submitted Students List -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">আপনার কলেজ থেকে এন্ট্রি করা ফরমসমূহ</h3>
+                <div class="overflow-x-auto max-h-96">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-blue-100 text-blue-800">
+                                <th class="p-2 border">নাম</th>
+                                <th class="p-2 border">শ্রেণি/বিষয়</th>
+                                <th class="p-2 border">স্ট্যাটাস</th>
+                                <th class="p-2 border">অ্যাকশন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="collegeStudentsTableBody">
+                            <!-- Dynamic data -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MASTER ADMIN DASHBOARD (Hidden by default) -->
+    <section id="masterAdminDashboardSection" class="hidden container mx-auto px-4 py-8">
+        <div class="bg-white p-6 rounded-lg shadow border-t-4 border-red-600 mb-6 flex justify-between items-center">
+            <div>
+                <h2 class="text-2xl font-bold text-red-700">মাস্টার অ্যাডমিন প্যানেল</h2>
+                <p class="text-sm text-gray-500">বোর্ডের সার্বিক ব্যবস্থাপনা</p>
+            </div>
+            <button onclick="logoutAdmin()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">লগআউট</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-4 rounded shadow border-l-4 border-orange-500">
+                <h4 class="text-gray-500 font-semibold">মোট ফরম এন্ট্রি</h4>
+                <p class="text-3xl font-bold text-gray-800" id="statTotalForms">0</p>
+            </div>
+            <div class="bg-white p-4 rounded shadow border-l-4 border-blue-500">
+                <h4 class="text-gray-500 font-semibold">অনুমোদিত কলেজ</h4>
+                <p class="text-3xl font-bold text-gray-800" id="statTotalColleges">0</p>
+            </div>
+            <div class="bg-white p-4 rounded shadow border-l-4 border-green-500">
+                <h4 class="text-gray-500 font-semibold">প্রকাশিত নোটিশ</h4>
+                <p class="text-3xl font-bold text-gray-800" id="statTotalNotices">0</p>
+            </div>
+        </div>
+
+        <!-- Admin Tabs -->
+        <div class="bg-white p-6 rounded-lg shadow space-y-6">
+            <div class="flex space-x-4 border-b pb-3 overflow-x-auto">
+                <button onclick="switchAdminTab('collegesTab')" id="btnCollegesTab" class="font-bold text-red-600 pb-1 border-b-2 border-red-600 whitespace-nowrap">কলেজ ম্যানেজমেন্ট</button>
+                <button onclick="switchAdminTab('formsTab')" id="btnFormsTab" class="font-semibold text-gray-600 pb-1 whitespace-nowrap">সকল ফরম লিস্ট</button>
+                <button onclick="switchAdminTab('noticesTab')" id="btnNoticesTab" class="font-semibold text-gray-600 pb-1 whitespace-nowrap">নোটিশ ও পিডিএফ আপলোড</button>
+                <button onclick="switchAdminTab('settingsTab')" id="btnSettingsTab" class="font-semibold text-gray-600 pb-1 whitespace-nowrap">সেটিংস ও পাসওয়ার্ড</button>
+            </div>
+
+            <!-- Colleges Management Tab -->
+            <div id="collegesTabContent" class="space-y-4">
+                <h3 class="text-lg font-bold">নতুন কলেজ অ্যাকাউন্ট তৈরি করুন</h3>
+                <form onsubmit="createNewCollege(event)" class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded border">
+                    <input type="text" id="newCollegeId" placeholder="কলেজ আইডি (যেমন: college2)" required class="border p-2 rounded">
+                    <input type="text" id="newCollegePass" placeholder="পাসওয়ার্ড" required class="border p-2 rounded">
+                    <input type="text" id="newCollegeNameInput" placeholder="কলেজের নাম" required class="border p-2 rounded">
+                    <button type="submit" class="bg-red-600 text-white font-bold p-2 rounded hover:bg-red-700">কলেজ যোগ করুন</button>
+                </form>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="p-2 border">আইডি</th>
+                                <th class="p-2 border">পাসওয়ার্ড</th>
+                                <th class="p-2 border">কলেজের নাম</th>
+                                <th class="p-2 border">অ্যাকশন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminCollegeListBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- All Forms Tab -->
+            <div id="formsTabContent" class="hidden space-y-4">
+                <h3 class="text-lg font-bold">সকল কলেজ থেকে জমাকৃত ফরমসমূহ</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="p-2 border">কলেজ</th>
+                                <th class="p-2 border">শিক্ষার্থী</th>
+                                <th class="p-2 border">পিতা/মাতা</th>
+                                <th class="p-2 border">শ্রেণি/বিষয়</th>
+                                <th class="p-2 border">স্ট্যাটাস</th>
+                                <th class="p-2 border">অ্যাকশন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminAllFormsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Notices Tab -->
+            <div id="noticesTabContent" class="hidden space-y-4">
+                <h3 class="text-lg font-bold">নতুন নোটিশ ও PDF প্রকাশ করুন</h3>
+                <form onsubmit="createNotice(event)" class="bg-gray-50 p-4 rounded border space-y-3">
+                    <input type="text" id="noticeTitle" placeholder="নোটিশের শিরোনাম" required class="w-full border p-2 rounded">
+                    <textarea id="noticeDesc" placeholder="নোটিশের বিস্তারিত বিবরণ..." required class="w-full border p-2 rounded"></textarea>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">নোটিশের সাথে PDF ফাইল যুক্ত করুন (ঐচ্ছিক):</label>
+                        <input type="file" id="noticePdfFile" accept="application/pdf" class="w-full border p-2 rounded bg-white">
+                    </div>
+                    <button type="submit" class="bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700">নোটিশ প্রকাশ করুন</button>
+                </form>
+                <div id="adminNoticeList" class="space-y-2"></div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settingsTabContent" class="hidden space-y-4 max-w-md">
+                <h3 class="text-lg font-bold">অ্যাডমিন পাসওয়ার্ড ও সাইট সেটিংস পরিবর্তন</h3>
+                <form onsubmit="updateSettings(event)" class="space-y-3 bg-gray-50 p-4 rounded border">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">বোর্ডের নাম:</label>
+                        <input type="text" id="settingTitle" required class="w-full border p-2 rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">ঠিকানা:</label>
+                        <input type="text" id="settingAddress" required class="w-full border p-2 rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">নতুন অ্যাডমিন পাসওয়ার্ড:</label>
+                        <input type="password" id="settingAdminPass" placeholder="নতুন পাসওয়ার্ড দিন" required class="w-full border p-2 rounded">
+                    </div>
+                    <button type="submit" class="bg-red-600 text-white font-bold p-2 rounded w-full hover:bg-red-700">সেটিংস সেভ করুন</button>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- COLLEGE LOGIN MODAL -->
+    <div id="collegeLoginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm relative">
+            <h3 class="text-xl font-bold text-orange-700 mb-4">কলেজ পোর্টাল লগইন</h3>
+            <form onsubmit="handleCollegeLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block font-semibold mb-1">কলেজ আইডি:</label>
+                    <input type="text" id="loginCollegeId" required class="w-full border p-2 rounded">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">পাসওয়ার্ড:</label>
+                    <input type="password" id="loginCollegePass" required class="w-full border p-2 rounded">
+                </div>
+                <div class="flex justify-end space-x-2">
+                    <button type="button" onclick="closeCollegeLoginModal()" class="bg-gray-300 px-4 py-2 rounded">বাতিল</button>
+                    <button type="submit" class="bg-orange-600 text-white px-4 py-2 rounded font-bold">লগইন</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ADMIN LOGIN MODAL (Hash Triggered) -->
+    <div id="adminLoginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm relative">
+            <h3 class="text-xl font-bold text-red-700 mb-4">মাস্টার অ্যাডমিন লগইন</h3>
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block font-semibold mb-1">ইউজারনেম:</label>
+                    <input type="text" id="adminUser" required class="w-full border p-2 rounded" value="admin">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">পাসওয়ার্ড:</label>
+                    <input type="password" id="adminPass" required class="w-full border p-2 rounded">
+                </div>
+                <div class="flex justify-end space-x-2">
+                    <button type="button" onclick="closeAdminLoginModal()" class="bg-gray-300 px-4 py-2 rounded">বাতিল</button>
+                    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded font-bold">লগইন</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Data and Functions -->
+    <script>
+        const geoData = {
+            "ঢাকা": {
+                "ঢাকা": ["ধানমন্ডি", "রমনা", "তেজগাঁও", "উত্তরা", "মিরপুর", "সাভার"],
+                "গাজীপুর": ["সদর", "কালিয়াকৈর", "শ্রীপুর", "কাপাসিয়া"],
+                "নারায়ণগঞ্জ": ["সদর", "বন্দর", "রূপগঞ্জ", "সোনারগাঁও"],
+                "নরসিংদী": ["সদর", "বেলাব", "মনোহরদী", "রায়পুরা"],
+                "মানিকগঞ্জ": ["সদর", "সিংগাইর", "ঘিওর", "শিবালয়"],
+                "মুন্সিগঞ্জ": ["সদর", "শ্রীনগর", "টঙ্গীবাড়ি", "লৌহজং"],
+                "ফরিদপুর": ["সদর", "বোয়ালমারী", "আলফাডাঙ্গা", "মধুখালী"],
+                "মাদারীপুর": ["সদর", "শিবচর", "কালকিনি", "রাজৈর"],
+                "শরীয়তপুর": ["সদর", "নড়িয়া", "জাজিরা", "ভেদরগঞ্জ"],
+                "রাজবাড়ী": ["সদর", "পাংশা", "বালিয়াকান্দি", "কালুখালী"],
+                "কিশোরগঞ্জ": ["সদর", "হোসেনপুর", "পাকুন্দিয়া", "কটিয়াদী"]
+            },
+            "চট্টগ্রাম": {
+                "চট্টগ্রাম": ["কোতোয়ালী", "পাহাড়তলী", "পাঁচলাইশ", "সীতাকুণ্ড", "মিরসরাই", "সন্দ্বীপ"],
+                "কক্সবাজার": ["সদর", "চকরিয়া", "উখিয়া", "টেকনাফ", "মহেশখালী"],
+                "কুমিল্লা": ["সদর", "ব্রাহ্মণপাড়া", "বুড়িচং", "চান্দিনা", "লাকসাম"],
+                "ব্রাহ্মণবাড়িয়া": ["সদর", "কসবা", "নাসিরনগর", "সরাইল", "আশুগঞ্জ"],
+                "চাঁদপুর": ["সদর", "মতলব", "ফরিদগঞ্জ", "হাজীগঞ্জ"],
+                "লক্ষ্মীপুর": ["সদর", "রায়পুর", "রামগঞ্জ", "কমলনগর"],
+                "নোয়াখালী": ["সদর", "বেগমগঞ্জ", "কোম্পানীগঞ্জ", "চাটখিল"],
+                "ফেনী": ["সদর", "দাগনভূঞা", "ছাগলনাইয়া", "সোনাগাজী"]
+            },
+            "রাজশাহী": {
+                "রাজশাহী": ["বোয়ালিয়া", "মতিহার", "রাজপাড়া", "চারঘাট", "বাঘা"],
+                "বগুড়া": ["সদর", "শেরপুর", "ধুনট", "গাবতলী", "সোনাতলা"],
+                "পাবনা": ["সদর", "ঈশ্বরদী", "বেড়া", "সুজানগর", "চাটমোহর"],
+                "সিরাজগঞ্জ": ["সদর", "কাজিপুর", "উল্লাপাড়া", "শাহজাদপুর", "বেলকুচি"],
+                "নওগাঁ": ["সদর", "মহাদেবপুর", "মান্দা", "পোরশা", "বদলগাছী"],
+                "নাটোর": ["সদর", "বাগাতিপাড়া", "লালপুর", "গুরুদাসপুর"],
+                "চাঁপাইনবাবগঞ্জ": ["সদর", "গোমস্তাপুর", "নাচোল", "ভোলাহাট"],
+                "জয়পুরহাট": ["সদর", "পাঁচবিবি", "আক্কেলপুর", "কালাই"]
+            },
+            "খুলনা": {
+                "খুলনা": ["সদর", "সোনাডাঙ্গা", "খালিশপুর", "ডুমুরিয়া", "বটিয়াঘাটা"],
+                "যশোর": ["সদর", "অভয়নগর", "বাঘারপাড়া", "চৌগাছা", "ঝিকরগাছা"],
+                "সাতক্ষীরা": ["সদর", "কলারোয়া", "তালা", "কালিগঞ্জ", "শ্যামনগর"],
+                "কুষ্টিয়া": ["সদর", "কুমারখালী", "দৌলতপুর", "মিরপুর"],
+                "মেহেরপুর": ["সদর", "গাংনী", "মুজিবনগর"],
+                "নড়াইল": ["সদর", "লোহাগড়া", "কালিয়া"],
+                "বাগেরহাট": ["সদর", "মোংলা", "রামপাল", "মোড়েলগঞ্জ"],
+                "মাগুরা": ["সদর", "শ্রীপুর", "মহম্মদপুর", "শালিখা"],
+                "ঝিনাইদহ": ["সদর", "শৈলকুপা", "কালীগঞ্জ", "কোটচাঁদপুর"]
+            },
+            "বরিশাল": {
+                "বরিশাল": ["কোতোয়ালী", "বাকেরগঞ্জ", "বাবুগঞ্জ", "উজিরপুর", "মেহেন্দিগঞ্জ", "হিজলা"],
+                "পটুয়াখালী": ["সদর", "বাউফল", "কলাপাড়া", "গলাচিপা", "দশমিনা"],
+                "ভোলা": ["সদর", "বোরহানউদ্দিন", "চরফ্যাশন", "লালমোহন", "তজুমদ্দিন"],
+                "পিরোজপুর": ["সদর", "স্বরূপকাঠী", "নাজিরপুর", "ভাণ্ডারিয়া", "মঠবাড়িয়া"],
+                "ঝালকাঠি": ["সদর", "কাঠালিয়া", "নলছিটি", "রাজাপুর"],
+                "বরগুনা": ["সদর", "আমতলী", "বেতাগী", "পাথরঘাটা"]
+            },
+            "সিলেট": {
+                "সিলেট": ["কোতোয়ালী", "দক্ষিণ সুরমা", "বিশ্বনাথ", "গোলাপগঞ্জ", "ফেঞ্চুগঞ্জ", "কোম্পানীগঞ্জ"],
+                "মৌলভীবাজার": ["সদর", "শ্রীমঙ্গল", "কমলগঞ্জ", "কুলাউড়া", "রাজনগর"],
+                "হবিগঞ্জ": ["সদর", "নবীগঞ্জ", "বাহুবল", "চুনারুঘাট", "মাধবপুর"],
+                "সুনামগঞ্জ": ["সদর", "বিশ্বম্ভরপুর", "ছাতক", "জগন্নাথপুর", "ধর্মপাশা"]
+            },
+            "রংপুর": {
+                "রংপুর": ["কোতোয়ালী", "মিঠাপুকুর", "পীরগঞ্জ", "বদরগঞ্জ", "তারাগঞ্জ"],
+                "দিনাজপুর": ["সদর", "বীরগঞ্জ", "পার্বতীপুর", "বিরামপুর", "ফুলবাড়ী"],
+                "গাইবান্ধা": ["সদর", "ফুলছড়ি", "সাঘাটা", "গোবিন্দগঞ্জ", "সুন্দরগঞ্জ"],
+                "কুড়িগ্রাম": ["সদর", "উলিপুর", "রৌমারী", "চিলমারী", "রাজারহাট"],
+                "লালমনিরহাট": ["সদর", "কালীগঞ্জ", "হাতীবান্ধা", "পাটগ্রাম"],
+                "নীলফামারী": ["সদর", "জলঢাকা", "ডোমার", "কিশোরগঞ্জ", "সৈয়দপুর"],
+                "পঞ্চগড়": ["সদর", "বোদা", "দেবীগঞ্জ", "আটোয়ারী"],
+                "ঠাকুরগাঁও": ["সদর", "রানীশংকৈল", "বালিয়াডাঙ্গী", "হরিপুর"]
+            },
+            "ময়মনসিংহ": {
+                "ময়মনসিংহ": ["কোতোয়ালী", "ভালুকা", "মুক্তাগাছা", "ত্রিশাল", "গফরগাঁও", "ফুলপুর"],
+                "জামালপুর": ["সদর", "মেলান্দহ", "ইসলামপুর", "বকশীগঞ্জ", "সরিষাবাড়ী"],
+                "শেরপুর": ["সদর", "নালিতাবাড়ী", "শ্রীবরদী", "ঝিনাইগাতী"],
+                "নেত্রকোণা": ["সদর", "কেন্দুয়া", "মোহনগঞ্জ", "দুর্গাপুর", "বারহাট্টা"]
+            }
+        };
+
+        if (!localStorage.getItem('colleges')) {
+            localStorage.setItem('colleges', JSON.stringify([
+                { id: 'college1', pass: '1234', name: 'ঢাকা সংস্কৃত টোল' }
+            ]));
+        }
+        if (!localStorage.getItem('students')) {
+            localStorage.setItem('students', JSON.stringify([]));
+        }
+        if (!localStorage.getItem('notices')) {
+            localStorage.setItem('notices', JSON.stringify([
+                { id: 1, title: '২০২৭ সালের পরীক্ষার প্রাথমিক বিজ্ঞপ্তি', desc: 'সকল অনুমোদিত কলেজকে যথাসময়ে ফরম এন্ট্রি সম্পন্ন করার অনুরোধ করা হলো।', pdf: null, date: '২০২৬-০৬-০১' }
+            ]));
+        }
+        if (!localStorage.getItem('adminSettings')) {
+            localStorage.setItem('adminSettings', JSON.stringify({
+                title: 'বাংলাদেশ সংস্কৃত ও পালি শিক্ষা বোর্ড',
+                address: 'ঠিকানা- অতিশ দীপঙ্কর সড়ক, ঢাকা-১২১৪',
+                pass: '12345'
+            }));
+        }
+
+        let loggedInCollege = null;
+
+        window.onload = function() {
+            const settings = JSON.parse(localStorage.getItem('adminSettings'));
+            document.getElementById('siteTitle').innerText = settings.title;
+            document.getElementById('siteAddress').innerText = settings.address;
+            renderNotices();
+            renderCollegesList();
+
+            // Check if URL has #admin hash to open admin login directly
+            if (window.location.hash === '#admin') {
+                document.getElementById('adminLoginModal').classList.remove('hidden');
+            }
+
+            // Listen to hash change
+            window.addEventListener('hashchange', () => {
+                if (window.location.hash === '#admin') {
+                    document.getElementById('adminLoginModal').classList.remove('hidden');
+                }
+            });
+        };
+
+        function showSection(section) {
+            document.getElementById('homeSection').classList.add('hidden');
+            document.getElementById('noticesSection').classList.add('hidden');
+            document.getElementById('collegesSection').classList.add('hidden');
+            document.getElementById('collegeDashboardSection').classList.add('hidden');
+            document.getElementById('masterAdminDashboardSection').classList.add('hidden');
+
+            if (section === 'home') document.getElementById('homeSection').classList.remove('hidden');
+            if (section === 'notices') {
+                document.getElementById('noticesSection').classList.remove('hidden');
+                renderNotices();
+            }
+            if (section === 'colleges') {
+                document.getElementById('collegesSection').classList.remove('hidden');
+                renderCollegesList();
+            }
+        }
+
+        function loadDistricts() {
+            const div = document.getElementById('regDivision').value;
+            const distSelect = document.getElementById('regDistrict');
+            distSelect.innerHTML = '<option value="">জেলা নির্বাচন করুন</option>';
+            document.getElementById('regThana').innerHTML = '<option value="">প্রথমে জেলা নির্বাচন</option>';
+            if (geoData[div]) {
+                for (let dist in geoData[div]) {
+                    distSelect.innerHTML += `<option value="${dist}">${dist}</option>`;
+                }
+            }
+        }
+
+        function loadThanas() {
+            const div = document.getElementById('regDivision').value;
+            const dist = document.getElementById('regDistrict').value;
+            const thanaSelect = document.getElementById('regThana');
+            thanaSelect.innerHTML = '<option value="">উপজেলা/থানা নির্বাচন</option>';
+            if (geoData[div] && geoData[div][dist]) {
+                geoData[div][dist].forEach(thana => {
+                    thanaSelect.innerHTML += `<option value="${thana}">${thana}</option>`;
+                });
+            }
+        }
+
+        function openCollegeLoginModal() { document.getElementById('collegeLoginModal').classList.remove('hidden'); }
+        function closeCollegeLoginModal() { document.getElementById('collegeLoginModal').classList.add('hidden'); }
+
+        function handleCollegeLogin(e) {
+            e.preventDefault();
+            const id = document.getElementById('loginCollegeId').value;
+            const pass = document.getElementById('loginCollegePass').value;
+            const colleges = JSON.parse(localStorage.getItem('colleges'));
+            const college = colleges.find(c => c.id === id && c.pass === pass);
+
+            if (college) {
+                loggedInCollege = college;
+                closeCollegeLoginModal();
+                document.getElementById('homeSection').classList.add('hidden');
+                document.getElementById('noticesSection').classList.add('hidden');
+                document.getElementById('collegesSection').classList.add('hidden');
+                document.getElementById('collegeDashboardSection').classList.remove('hidden');
+                document.getElementById('loggedInCollegeName').innerText = `ড্যাশবোর্ড: ${college.name}`;
+                renderCollegeStudents();
+            } else {
+                alert('ভুল কলেজ আইডি বা পাসওয়ার্ড!');
+            }
+        }
+
+        function logoutCollege() {
+            loggedInCollege = null;
+            document.getElementById('collegeDashboardSection').classList.add('hidden');
+            showSection('home');
+        }
+
+        function submitStudentForm(e) {
+            e.preventDefault();
+            const students = JSON.parse(localStorage.getItem('students'));
+            const newStudent = {
+                id: Date.now(),
+                collegeId: loggedInCollege.id,
+                collegeName: loggedInCollege.name,
+                name: document.getElementById('stuName').value,
+                father: document.getElementById('stuFather').value,
+                mother: document.getElementById('stuMother').value,
+                sClass: document.getElementById('stuClass').value,
+                subject: document.getElementById('stuSubject').value,
+                division: document.getElementById('regDivision').value,
+                district: document.getElementById('regDistrict').value,
+                thana: document.getElementById('regThana').value,
+                mobile: document.getElementById('stuMobile').value,
+                status: 'পেন্ডিং'
+            };
+            students.push(newStudent);
+            localStorage.setItem('students', JSON.stringify(students));
+            alert('শিক্ষার্থীর ফরম সফলভাবে এন্ট্রি হয়েছে!');
+            document.getElementById('studentEntryForm').reset();
+            renderCollegeStudents();
+        }
+
+        function renderCollegeStudents() {
+            const students = JSON.parse(localStorage.getItem('students')).filter(s => s.collegeId === loggedInCollege.id);
+            const tbody = document.getElementById('collegeStudentsTableBody');
+            tbody.innerHTML = '';
+            students.forEach(s => {
+                tbody.innerHTML += `
+                    <tr class="border-b">
+                        <td class="p-2">${s.name}<br><small class="text-gray-500">${s.mobile}</small></td>
+                        <td class="p-2">${s.sClass} - ${s.subject}</td>
+                        <td class="p-2"><span class="px-2 py-1 rounded text-xs ${s.status === 'অনুমোদিত' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">${s.status}</span></td>
+                        <td class="p-2"><button onclick="deleteStudent(${s.id})" class="text-red-600 hover:underline">ডিলিট</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function deleteStudent(id) {
+            let students = JSON.parse(localStorage.getItem('students'));
+            students = students.filter(s => s.id !== id);
+            localStorage.setItem('students', JSON.stringify(students));
+            renderCollegeStudents();
+        }
+
+        function closeAdminLoginModal() { 
+            document.getElementById('adminLoginModal').classList.add('hidden');
+            if (window.location.hash === '#admin') {
+                window.location.hash = ''; // Remove hash when closed
+            }
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById('adminUser').value;
+            const pass = document.getElementById('adminPass').value;
+            const settings = JSON.parse(localStorage.getItem('adminSettings'));
+
+            if (user === 'admin' && pass === settings.pass) {
+                closeAdminLoginModal();
+                document.getElementById('homeSection').classList.add('hidden');
+                document.getElementById('noticesSection').classList.add('hidden');
+                document.getElementById('collegesSection').classList.add('hidden');
+                document.getElementById('masterAdminDashboardSection').classList.remove('hidden');
+                updateAdminDashboardStats();
+                renderAdminColleges();
+                renderAdminForms();
+                renderAdminNotices();
+                document.getElementById('settingTitle').value = settings.title;
+                document.getElementById('settingAddress').value = settings.address;
+            } else {
+                alert('ভুল অ্যাডমিন ইউজারনেম বা পাসওয়ার্ড!');
+            }
+        }
+
+        function logoutAdmin() {
+            document.getElementById('masterAdminDashboardSection').classList.add('hidden');
+            showSection('home');
+        }
+
+        function switchAdminTab(tab) {
+            ['collegesTabContent', 'formsTabContent', 'noticesTabContent', 'settingsTabContent'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            ['btnCollegesTab', 'btnFormsTab', 'btnNoticesTab', 'btnSettingsTab'].forEach(id => {
+                document.getElementById(id).classList.remove('text-red-600', 'border-b-2', 'border-red-600', 'font-bold');
+                document.getElementById(id).classList.add('text-gray-600', 'font-semibold');
+            });
+
+            if (tab === 'collegesTab') {
+                document.getElementById('collegesTabContent').classList.remove('hidden');
+                styleActiveTab('btnCollegesTab');
+            } else if (tab === 'formsTab') {
+                document.getElementById('formsTabContent').classList.remove('hidden');
+                styleActiveTab('btnFormsTab');
+                renderAdminForms();
+            } else if (tab === 'noticesTab') {
+                document.getElementById('noticesTabContent').classList.remove('hidden');
+                styleActiveTab('btnNoticesTab');
+            } else if (tab === 'settingsTab') {
+                document.getElementById('settingsTabContent').classList.remove('hidden');
+                styleActiveTab('btnSettingsTab');
+            }
+        }
+
+        function styleActiveTab(btnId) {
+            const btn = document.getElementById(btnId);
+            btn.classList.remove('text-gray-600', 'font-semibold');
+            btn.classList.add('text-red-600', 'border-b-2', 'border-red-600', 'font-bold');
+        }
+
+        function updateAdminDashboardStats() {
+            document.getElementById('statTotalForms').innerText = JSON.parse(localStorage.getItem('students')).length;
+            document.getElementById('statTotalColleges').innerText = JSON.parse(localStorage.getItem('colleges')).length;
+            document.getElementById('statTotalNotices').innerText = JSON.parse(localStorage.getItem('notices')).length;
+        }
+
+        function createNewCollege(e) {
+            e.preventDefault();
+            const colleges = JSON.parse(localStorage.getItem('colleges'));
+            const newC = {
+                id: document.getElementById('newCollegeId').value,
+                pass: document.getElementById('newCollegePass').value,
+                name: document.getElementById('newCollegeNameInput').value
+            };
+            colleges.push(newC);
+            localStorage.setItem('colleges', JSON.stringify(colleges));
+            alert('নতুন কলেজ সফলভাবে যুক্ত হয়েছে!');
+            e.target.reset();
+            renderAdminColleges();
+            updateAdminDashboardStats();
+        }
+
+        function renderAdminColleges() {
+            const colleges = JSON.parse(localStorage.getItem('colleges'));
+            const tbody = document.getElementById('adminCollegeListBody');
+            tbody.innerHTML = '';
+            colleges.forEach(c => {
+                tbody.innerHTML += `
+                    <tr class="border-b">
+                        <td class="p-2">${c.id}</td>
+                        <td class="p-2">${c.pass}</td>
+                        <td class="p-2">${c.name}</td>
+                        <td class="p-2"><button onclick="deleteCollege('${c.id}')" class="text-red-600 hover:underline">ডিলিট</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function deleteCollege(id) {
+            let colleges = JSON.parse(localStorage.getItem('colleges'));
+            colleges = colleges.filter(c => c.id !== id);
+            localStorage.setItem('colleges', JSON.stringify(colleges));
+            renderAdminColleges();
+            updateAdminDashboardStats();
+        }
+
+        function renderAdminForms() {
+            const students = JSON.parse(localStorage.getItem('students'));
+            const tbody = document.getElementById('adminAllFormsBody');
+            tbody.innerHTML = '';
+            students.forEach(s => {
+                tbody.innerHTML += `
+                    <tr class="border-b">
+                        <td class="p-2">${s.collegeName}</td>
+                        <td class="p-2">${s.name}<br><small>${s.mobile}</small></td>
+                        <td class="p-2">${s.father} / ${s.mother}</td>
+                        <td class="p-2">${s.sClass} - ${s.subject}</td>
+                        <td class="p-2"><span class="px-2 py-1 rounded text-xs ${s.status === 'অনুমোদিত' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">${s.status}</span></td>
+                        <td class="p-2 space-x-1">
+                            <button onclick="toggleStudentStatus(${s.id})" class="text-blue-600 hover:underline">স্ট্যাটাস বদল</button>
+                            <button onclick="deleteStudentAdmin(${s.id})" class="text-red-600 hover:underline">ডিলিট</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function toggleStudentStatus(id) {
+            let students = JSON.parse(localStorage.getItem('students'));
+            students = students.map(s => {
+                if (s.id === id) {
+                    s.status = s.status === 'অনুমোদিত' ? 'পেন্ডিং' : 'অনুমোদিত';
+                }
+                return s;
+            });
+            localStorage.setItem('students', JSON.stringify(students));
+            renderAdminForms();
+        }
+
+        function deleteStudentAdmin(id) {
+            let students = JSON.parse(localStorage.getItem('students'));
+            students = students.filter(s => s.id !== id);
+            localStorage.setItem('students', JSON.stringify(students));
+            renderAdminForms();
+            updateAdminDashboardStats();
+        }
+
+        function createNotice(e) {
+            e.preventDefault();
+            const title = document.getElementById('noticeTitle').value;
+            const desc = document.getElementById('noticeDesc').value;
+            const fileInput = document.getElementById('noticePdfFile');
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(uploadE) {
+                    saveNoticeToStorage(title, desc, uploadE.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                saveNoticeToStorage(title, desc, null);
+            }
+        }
+
+        function saveNoticeToStorage(title, desc, pdf) {
+            const notices = JSON.parse(localStorage.getItem('notices'));
+            const newN = {
+                id: Date.now(),
+                title: title,
+                desc: desc,
+                pdf: pdf,
+                date: new Date().toISOString().split('T')[0]
+            };
+            notices.unshift(newN);
+            localStorage.setItem('notices', JSON.stringify(notices));
+            alert('নোটিশ সফলভাবে প্রকাশিত হয়েছে!');
+            document.getElementById('noticeTitle').value = '';
+            document.getElementById('noticeDesc').value = '';
+            document.getElementById('noticePdfFile').value = '';
+            renderAdminNotices();
+            updateAdminDashboardStats();
+        }
+
+        function renderAdminNotices() {
+            const notices = JSON.parse(localStorage.getItem('notices'));
+            const container = document.getElementById('adminNoticeList');
+            container.innerHTML = '';
+            notices.forEach(n => {
+                container.innerHTML += `
+                    <div class="border p-3 rounded flex justify-between items-center bg-gray-50">
+                        <div>
+                            <h4 class="font-bold text-gray-800">${n.title}</h4>
+                            <p class="text-xs text-gray-500">${n.date}</p>
+                        </div>
+                        <button onclick="deleteNotice(${n.id})" class="text-red-600 text-sm hover:underline">ডিলিট</button>
+                    </div>
+                `;
+            });
+        }
+
+        function deleteNotice(id) {
+            let notices = JSON.parse(localStorage.getItem('notices'));
+            notices = notices.filter(n => n.id !== id);
+            localStorage.setItem('notices', JSON.stringify(notices));
+            renderAdminNotices();
+            updateAdminDashboardStats();
+        }
+
+        function renderNotices() {
+            const notices = JSON.parse(localStorage.getItem('notices'));
+            const container = document.getElementById('noticeListContainer');
+            container.innerHTML = '';
+            notices.forEach(n => {
+                container.innerHTML += `
+                    <div class="border-b pb-4 mb-4">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="text-lg font-bold text-orange-800">${n.title}</h3>
+                            <span class="text-sm text-gray-500">${n.date}</span>
+                        </div>
+                        <p class="text-gray-600 mb-2">${n.desc}</p>
+                        ${n.pdf ? `<a href="${n.pdf}" download="notice_${n.id}.pdf" class="inline-block bg-orange-600 text-white text-sm px-3 py-1 rounded hover:bg-orange-700 transition">📄 পিডিএফ ডাউনলোড করুন</a>` : ''}
+                    </div>
+                `;
+            });
+        }
+
+        function updateSettings(e) {
+            e.preventDefault();
+            const title = document.getElementById('settingTitle').value;
+            const address = document.getElementById('settingAddress').value;
+            const pass = document.getElementById('settingAdminPass').value;
+
+            const settings = { title, address, pass };
+            localStorage.setItem('adminSettings', JSON.stringify(settings));
+            document.getElementById('siteTitle').innerText = title;
+            document.getElementById('siteAddress').innerText = address;
+            alert('সেটিংস সফলভাবে আপডেট হয়েছে!');
+        }
+
+        function renderCollegesList() {
+            const colleges = JSON.parse(localStorage.getItem('colleges'));
+            const tbody = document.getElementById('approvedCollegesTableBody');
+            tbody.innerHTML = '';
+            colleges.forEach(c => {
+                tbody.innerHTML += `
+                    <tr class="border-b">
+                        <td class="p-3 border font-semibold text-orange-700">${c.id}</td>
+                        <td class="p-3 border">${c.name}</td>
+                        <td class="p-3 border">বাংলাদেশ সংস্কৃত ও পালি শিক্ষা বোর্ড</td>
+                    </tr>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
